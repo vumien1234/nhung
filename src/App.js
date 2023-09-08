@@ -6,6 +6,7 @@ function App() {
     birthdate: '',
     gender: '',
   });
+  const [submittedData, setSubmittedData] = useState([]); // Store submitted data as an array of objects
   const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = (e) => {
@@ -16,7 +17,8 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    console.log('Thông tin đã nhập:', formData);
+    setSubmittedData([...submittedData, formData]); // Add the current form data to the submittedData array
+    setFormData({ name: '', birthdate: '', gender: '' }); // Clear the form after submission
   };
 
   return (
@@ -31,7 +33,7 @@ function App() {
           }
 
           .container {
-            width: 300px;
+            width: 500px;
             margin: auto;
             border: 1px solid #ccc;
             border-radius: 10px;
@@ -91,14 +93,28 @@ function App() {
             <button type='submit' style={{ backgroundColor: 'green', color: '#fff' }}>Lưu thông tin</button>
           </form>
         </div>
-        <div>
+        <div style={{marginTop:'10px'}}>
           {submitted && (
-            <div>
-              <h3>Thông tin đã nhập:</h3>
-              <p>Họ Tên: {formData.name}</p>
-              <p>Ngày sinh: {formData.birthdate}</p>
-              <p>Giới tính: {formData.gender}</p>
-            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Họ Tên</th>
+                  <th>Ngày sinh</th>
+                  <th>Giới tính</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submittedData.map((data, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{data.name}</td>
+                    <td>{data.birthdate}</td>
+                    <td>{data.gender}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </div>
